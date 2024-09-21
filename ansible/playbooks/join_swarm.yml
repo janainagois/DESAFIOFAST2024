@@ -1,0 +1,9 @@
+---
+- name: Join Docker Swarm as Worker
+  hosts: swarm_workers
+  become: true
+  tasks:
+
+    - name: Join Swarm
+      shell: |
+        docker swarm join --token {{ swarm_worker_token.stdout }} {{ manager_ip }}:2377
