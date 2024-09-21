@@ -41,6 +41,7 @@ resource "google_service_account" "default" {
   display_name = "Service Account for Swarm"
 }
 
+
 output "instance_ips" {
-  value = google_compute_instance.app_instance.*.network_interface[0].access_config[0].nat_ip
+  value = [for instance in google_compute_instance.app_instance: instance.network_interface[0].access_config[0].nat_ip]
 }
