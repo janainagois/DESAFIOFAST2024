@@ -1,8 +1,9 @@
 resource "google_compute_instance" "app_instance" {
   provider = google
   name     = "swarm-node-${count.index}"
-  machine_type = var.machine_type
-  zone     = var.zone
+  machine_type = var.google_instance_type
+  zone     = var.google_zone
+  count    = 3
 
   boot_disk {
     initialize_params {
