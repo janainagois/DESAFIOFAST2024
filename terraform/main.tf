@@ -1,5 +1,5 @@
 terraform {
-    required_Version = "1.9.5"
+    required_version = "1.9.5"
 }
 
   required_providers {
@@ -9,6 +9,6 @@ terraform {
     }
   }
 
-backend "local {
+backend "local" {
     path = "terraform.tfstate"
 }
