@@ -16,27 +16,16 @@ resource "google_compute_instance" "app_instance" {
     access_config {}
   }
 
-  metadata = {
-    "startup-script" = <<-EOT
-      #!/bin/bash
-      apt-get update
-      apt-get install -y docker.io
-      systemctl start docker
-      systemctl enable docker
-      docker swarm init || true
-    EOT
-  }
-
   tags = ["swarm-node"]
 
   service_account {
     // Google recommends custom service accounts with cloud-platform scope
-    email  = google_service_account.default.email // opcional
+   # email  = google_service_account.default.email // opcional
     scopes = ["cloud-platform"]
   }
 }
 
-resource "google_service_account" "default" {
+resource "google_service_account" "app_instance" {
   account_id   = "swarm-service-account"
   display_name = "Service Account for Swarm"
 }
