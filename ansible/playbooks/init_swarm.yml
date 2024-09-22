@@ -2,15 +2,19 @@
 - name: Initialize Docker Swarm Manager
   hosts: swarm_manager
   become: true
-  tasks:
 
+  tasks:
     - name: Initialize Docker Swarm on manager
       shell: |
         docker swarm init --advertise-addr {{ ansible_default_ipv4.address }}
       register: swarm_init
 
     - name: Get Swarm join token
-      shell: |
-        docker swarm join-token -q worker
+      shell: docker swarm join-token -q worker
       when: swarm_init.changed
       register: swarm_worker_token
+    
+    - name: Set fact for swarm worker token
+      set_fact:
+        worker_token: "{{ swarm_worker_token.stdout }}"
+      when: swarm_init.changed
