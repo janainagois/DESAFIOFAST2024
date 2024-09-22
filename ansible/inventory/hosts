@@ -1,0 +1,6 @@
+[swarm_nodes]
+manager_node ansible_host=35.222.102.243 ansible_user=marjangoisa ansible_ssh_private_key_file=id_rsa.unknown
+worker1 ansible_host=34.30.15.77 ansible_user=marjangoisa ansible_ssh_private_key_file=id_rsa.unknown
+worker2 ansible_host=34.28.120.93 ansible_user=marjangoisa ansible_ssh_private_key_file=id_rsa.unknown
+
+

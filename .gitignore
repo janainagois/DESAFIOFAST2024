@@ -1,3 +1,5 @@
 nifty-inn-432723-g9-7acf7f7c0e8c.json
-terraform/terraform.tfstate
-terraform/terraform.tfstate.backup
+/terraform/terraform.tfstate.backup
+/terraform/.terraform.lock.hcl
+/terraform/terraform.tfstate
+/ansible/id_rsa.unknown
