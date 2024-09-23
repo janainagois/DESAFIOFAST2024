@@ -1,0 +1,18 @@
+plugin: google.cloud.gcp_compute
+projects:
+  - my_first_project  
+zones:
+  - us-central1-a    
+filters: 
+  - status = RUNNING
+auth_kind: serviceaccount
+service_account_file: "../nifty-inn-432723-g9-7acf7f7c0e8c.json"
+hostnames:
+  - name
+compose:
+  ansible_host: networkInterfaces[0].accessConfigs[0].natIP
+groups:
+  swarm_manager: "'manager' in labels"
+  swarm_workers: "'worker' in labels"
+
+

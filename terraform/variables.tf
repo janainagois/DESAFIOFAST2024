@@ -26,7 +26,7 @@ variable "google_instance_type" {
 variable "google_instance_image" {
   description = "Google Instance Image"
   type        = string
-  default     = "centos-cloud/centos-stream-9"
+  default     = "ubuntu-os-cloud/ubuntu-2204-jammy-v20240904"
 }
 
 variable "google_network" {
@@ -38,7 +38,7 @@ variable "google_network" {
 variable "ssh_key_path_default_user" {
   description = "Path SSH Key for Default User"
   type        = string
-  default     = "~/.ssh/ecdsa_ansible.pub"
+  default     = "~/.ssh/nome_da_chave.pub"
 }
 
 variable "bucket_tfsatefile_name" {
