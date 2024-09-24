@@ -41,14 +41,8 @@ variable "ssh_key_path_default_user" {
   default     = "~/.ssh/nome_da_chave.pub"
 }
 
-variable "bucket_tfsatefile_name" {
-  description = "Name of the Bucket to save Statefile"
+variable "ssh_path_private_key" {
+  description = "Path SSH Private Key"
   type        = string
-  default     = "bucket-statefile-fast2024"
-}
-
-variable "storage_class" {
-  description = "Name of the Bucket to save Statefile"
-  type        = string
-  default     = "standard"
+  default     = "~/.ssh/nome_da_chave"
 }
