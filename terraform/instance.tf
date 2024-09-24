@@ -22,9 +22,22 @@ resource "google_compute_instance" "app_instance" {
   tags = ["swarm-node"]
 
   service_account {
-    // Google recommends custom service accounts with cloud-platform scope
-   # email  = google_service_account.default.email // opcional
     scopes = ["cloud-platform"]
+  }
+
+  provisioner "remote-exec" {
+    inline = ["sudo apt update", "sudo apt install python3 -y", "echo Done!"]
+
+    connection {
+      host        = self.network_interface[0].access_config[0].nat_ip
+      type        = "ssh"
+      user        = "ansible"
+      private_key = file(var.ssh_path_private_key)
+    }
+  }
+
+  provisioner "local-exec" {
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ansible -i '${self.network_interface[0].access_config[0].nat_ip},' --private-key ${var.ssh_path_private_key} -e 'pub_key=${var.ssh_key_path_default_user}' -e 'is_manager=${count.index == 0}' ../ansible/playbooks/inventory/install_docker.yml"
   }
 }
 
@@ -33,9 +46,9 @@ resource "google_service_account" "app_instance" {
   display_name = "Service Account for Swarm"
 }
 
-
-output "instance_ips" {
-  value = [for instance in google_compute_instance.app_instance: instance.network_interface[0].access_config[0].nat_ip]
+output "instance_ip" {
+  value = {
+    for instance in google_compute_instance.app_instance:
+    instance.name => instance.network_interface[0].access_config[0].nat_ip
+  }
 }
-
-
