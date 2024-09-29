@@ -8,7 +8,7 @@
     ssh_path_private_key: ~/.ssh/nome_da_chave
 
   tasks:
-    - name: Add the user 'fast' and add it to 'sudo'
+    - name: Add the user 'ansible' and add it to 'sudo'
       user:
         name: ansible
         group: sudo 
@@ -74,3 +74,42 @@
     - name: Join Docker Swarm (on workers only)
       shell: "docker swarm join --token {{ hostvars[groups['managers'][0]].worker_token.stdout }} {{ hostvars[groups['managers'][0]].ansible_default_ipv4.address }}:2377"
       when: not is_manager
+
+    # Configuração do Nginx e Deploy do HTML no Docker Swarm
+    - name: Create a directory for Dockerfile and HTML
+      file:
+        path: /home/ansible/docker/nginx
+        state: directory
+        owner: ansible
+        group: ansible
+        mode: 0755
+
+    - name: Create a Dockerfile for Nginx
+      copy:
+        dest: /home/ansible/docker/nginx/Dockerfile
+        content: |
+          FROM nginx:latest
+          COPY index.html /usr/share/nginx/html/index.html
+
+    - name: Create a simple HTML file
+      copy:
+        dest: /home/ansible/docker/nginx/index.html
+        content: |
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>Hello World</title>
+          </head>
+          <body>
+              <h1>Hello from Nginx container!</h1>
+          </body>
+          </html>
+
+    - name: Build Nginx Docker image
+      command: docker build -t mynginx /home/ansible/docker/nginx/
+
+    - name: Deploy Nginx service in Docker Swarm
+      shell: |
+        docker service create --name nginx_service --publish 80:80 mynginx
+      when: is_manager
+
