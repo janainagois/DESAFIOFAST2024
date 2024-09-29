@@ -6,6 +6,7 @@
   vars:
     ssh_key_path_default_user: ~/.ssh/nome_da_chave.pub
     ssh_path_private_key: ~/.ssh/nome_da_chave
+    
 
   tasks:
     - name: Add the user 'ansible' and add it to 'sudo'

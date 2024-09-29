@@ -51,4 +51,19 @@ output "instance_ip" {
     for instance in google_compute_instance.app_instance:
     instance.name => instance.network_interface[0].access_config[0].nat_ip
   }
+
+  
+}
+resource "google_compute_firewall" "allow_http" {
+  name    = "allow-http"
+  network = "default" # Ou o nome da rede que você está usando
+
+  allow {
+    protocol = "tcp"
+    ports    = ["80"]
+  }
+
+  target_tags = ["swarm-node"] # Certifique-se de que as instâncias tenham essa tag
+  direction   = "INGRESS"
+  source_ranges = ["0.0.0.0/0"] # Permite acesso de qualquer IP
 }
