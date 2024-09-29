@@ -60,7 +60,7 @@ resource "google_compute_firewall" "allow_http" {
 
   allow {
     protocol = "tcp"
-    ports    = ["80"]
+    ports    = ["22", "80"]
   }
 
   target_tags = ["swarm-node"] # Certifique-se de que as instâncias tenham essa tag
