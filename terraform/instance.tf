@@ -1,13 +1,12 @@
 resource "google_compute_instance" "app_instance" {
   provider = google
+  count    = 3
   name     = "swarm-node-${count.index}"
   machine_type = var.google_instance_type
   zone     = var.google_zone
   metadata = {
     ssh-keys = "ansible:${file(var.ssh_key_path_default_user)}"
   }
-  count    = 3
-
   boot_disk {
     initialize_params {
       image = var.google_instance_image
