@@ -1,0 +1,38 @@
+name: Terraform Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: 'Ambiente de deployment'
+        required: true
+        options:
+        - dev
+        - prod
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Clonar o repositório com o código Terraform
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # Instalar o Terraform
+    - name: Install Terraform
+      run: |
+        sudo apt-get update && sudo apt-get install -y terraform
+
+    # Executar o Terraform, que rodará o Ansible em seguida
+    - name: Run Terraform
+      run: |
+        terraform init
+        terraform apply -auto-approve
+      env:
+        TF_VAR_environment: ${{ github.event.inputs.environment }}
+
+
+
+    
