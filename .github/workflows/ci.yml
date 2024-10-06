@@ -28,4 +28,4 @@ jobs:
         run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
  
       - name: Push Docker image
-        run: docker push janainagois/fast-ci-cd: lastest
+        run: docker push janainagois/fast-ci-cd: latest
