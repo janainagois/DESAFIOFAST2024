@@ -29,6 +29,6 @@ jobs:
         with:
           push: true
           tags: >
-            janainagois/fast-ci-cd: ${{ github.event.number == 0 && 'latest' || format('PR-{0}', github.event.number) }}
+            janainagois/fast-ci-cd:${{ github.event.number == 0 && 'latest' || format('PR-{0}', github.event.number) }}
       
       
