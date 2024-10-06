@@ -1,38 +1,32 @@
-name: Terraform Deployment
+name: Continuous Deployment
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        type: choice
-        description: 'Ambiente de deployment'
-        required: true
-        options:
-        - dev
-        - prod
+  workflow_dispatch:  # Permite executar o deploy manualmente pelo GitHub Actions
+  push:
+    tags:
+      - 'v*.*.*'  # Executa o workflow quando uma tag de versão for criada (ex: v1.0.0)
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    # Clonar o repositório com o código Terraform
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout código
+        uses: actions/checkout@v3
 
-    # Instalar o Terraform
-    - name: Install Terraform
-      run: |
-        sudo apt-get update && sudo apt-get install -y terraform
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
 
-    # Executar o Terraform, que rodará o Ansible em seguida
-    - name: Run Terraform
-      run: |
-        terraform init
-        terraform apply -auto-approve
-      env:
-        TF_VAR_environment: ${{ github.event.inputs.environment }}
+      - name: Terraform Init
+        run: terraform init
 
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
 
+      - name: Set up SSH for Ansible
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    
+      - name: Run Ansible Playbook
+        run: ansible-playbook -i inventory.yml playbook.yml
