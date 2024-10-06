@@ -29,7 +29,7 @@ jobs:
         with:
           push: true
           context: .
-          file: ./docker/Dockerfile
+          file: ./docker/nginx/Dockerfile
           tags: >
             janainagois/fast-ci-cd:${{ github.event.number == 0 && 'latest' || format('PR-{0}', github.event.number) }}
       
