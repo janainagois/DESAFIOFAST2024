@@ -30,6 +30,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./docker/nginx/Dockerfile
           push: true
           tags: >
             janainagois/fast-ci-cd:${{ github.event.number == 0 && 'latest' || format('PR-{0}', github.event.number) }}
