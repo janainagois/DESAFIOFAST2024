@@ -22,7 +22,7 @@ jobs:
       
       - name: Build Docker image
         run: |
-        docker build -t janainagois/fast-ci-cd: lastest .
+        docker build -t janainagois/fast-ci-cd: latest .
         
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
