@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: List files
-        run: ls -R ./docker # Para ver a estrutura de diretórios
+        run: ls -R  # Para ver a estrutura de diretórios
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
