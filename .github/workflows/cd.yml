@@ -18,7 +18,7 @@ jobs:
         run: ls -la ./terraform
 
       - name: Criando arquivo de credencial
-        run: echo "$GOOGLE_CREDENTIAL" > ./credential.json
+        run: echo "$GOOGLE_CREDENTIAL" > credential.json
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
@@ -26,7 +26,7 @@ jobs:
       - name: Terraform Init com Reconfigure
         run: terraform -chdir=./terraform init -reconfigure
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ./credential.json
+          GOOGLE_APPLICATION_CREDENTIALS: credential.json
 
       - name: Terraform Apply
         run: terraform -chdir=./terraform apply -auto-approve
