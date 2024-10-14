@@ -1,5 +1,4 @@
-name: Continuous Deployment
-
+name: fast-cd
 on:
   workflow_dispatch:  # Permite executar o deploy manualmente pelo GitHub Actions
   push:
@@ -18,10 +17,10 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init ./terraform
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve ./terraform
 
       - name: Set up SSH for Ansible
         uses: webfactory/ssh-agent@v0.5.4
