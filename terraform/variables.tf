@@ -46,3 +46,7 @@ variable "ssh_path_private_key" {
   type        = string
   default     = "~/.ssh/nome_da_chave"
 }
+
+variable "GOOGLE_CREDENTIALS" {
+  type = string
+}
