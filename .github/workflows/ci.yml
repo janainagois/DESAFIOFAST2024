@@ -32,7 +32,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
           file: ./docker_project/nginx/Dockerfile
           push: true
           tags: >
