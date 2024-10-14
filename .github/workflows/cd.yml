@@ -25,6 +25,8 @@ jobs:
 
       - name: Terraform Init com Reconfigure
         run: terraform -chdir=./terraform init -reconfigure
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: terraform/credential.json
 
       - name: Terraform Apply
         run: terraform -chdir=./terraform apply -auto-approve
