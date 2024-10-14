@@ -13,5 +13,10 @@ terraform {
     backend "local" {
         path = "terraform.tfstate"
     }
+
+    backend "gcs" {
+     bucket  = "bucket-statefile-fast2024"
+     prefix  = "terraform/state"
+   }
     
 }

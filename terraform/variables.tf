@@ -13,7 +13,7 @@ variable "google_zone" {
 variable "my_first_project" {
     description = "My First Project"
     type        = string
-    default     = 552704724947
+    default     = "552704724947"
 }
 
 variable "google_instance_type" {
@@ -49,4 +49,17 @@ variable "ssh_path_private_key" {
 
 variable "GOOGLE_CREDENTIALS" {
   type = string
+  default = "terraform/credential.json"
+}
+
+variable "bucket_tfsatefile_name" {
+  description = "Name of the Bucket to save Statefile"
+  type        = string
+  default     = "bucket-statefile-fast2024"
+}
+
+variable "storage_class" {
+  description = "Name of the Bucket to save Statefile"
+  type        = string
+  default     = "standard"
 }
