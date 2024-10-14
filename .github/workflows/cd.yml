@@ -25,6 +25,7 @@ jobs:
       - name: Terraform Apply
         env:  
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          TF_LOG: DEBUG
         run: terraform -chdir=./terraform apply -auto-approve 
 
       - name: Set up SSH for Ansible
