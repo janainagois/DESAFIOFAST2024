@@ -20,7 +20,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Terraform Init com Reconfigure
-        run: terraform -reconfigure -chdir=./terraform init
+        run: terraform -chdir=./terraform init -reconfigure
 
       - name: Terraform Apply
         env:  
