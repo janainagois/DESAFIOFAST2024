@@ -10,9 +10,9 @@ terraform {
         }
     }
 
-    backend "local" {
-        path = "terraform.tfstate"
-    }
+    #backend "local" {
+    #    path = "terraform.tfstate"
+    #}
 
     backend "gcs" {
      bucket  = "bucket-statefile-fast2024"
