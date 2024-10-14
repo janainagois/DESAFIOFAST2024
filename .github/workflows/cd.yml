@@ -19,9 +19,9 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Terraform Init
-        run: terraform init 
-
+      - name: Terraform Init com Reconfigure
+        run: terraform init -reconfigure -chdir=./terraform
+        
       - name: Terraform Apply
         env:  
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
