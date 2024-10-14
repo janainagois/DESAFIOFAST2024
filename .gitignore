@@ -1,4 +1,4 @@
 nifty-inn-432723-g9-7acf7f7c0e8c.json
-./terraform.tfstate.backup
-./terraform/.terraform.lock.hcl
-./terraform.tfstate
+./terraform/.terraform/tfstate.backup
+./terraform/.terraform/.terraform.lock.hcl
+./terraform/.terraform/terraform.tfstate
