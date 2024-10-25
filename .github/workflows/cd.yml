@@ -28,6 +28,8 @@ jobs:
           export GOOGLE_APPLICATION_CREDENTIALS=~/google-credentials.json
 
       - name: Terraform Init com Reconfigure
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ~/google-credentials.json
         run: terraform -chdir=./terraform init -reconfigure
        
       - name: Terraform Apply
