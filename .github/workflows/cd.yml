@@ -23,13 +23,13 @@ jobs:
 
       - name: Terraform Init com Reconfigure
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
           TF_LOG: DEBUG
         run: terraform -chdir=./terraform init -reconfigure
        
       - name: Terraform Apply
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
           TF_LOG: DEBUG
         run: terraform -chdir=./terraform apply -auto-approve
 
