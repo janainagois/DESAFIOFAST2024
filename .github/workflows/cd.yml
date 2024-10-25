@@ -20,9 +20,6 @@ jobs:
       - name: Listar arquivos do diretório Terraform
         run: ls -la $GITHUB_WORKSPACE/terraform
 
-      - name: Verificar conteúdo do arquivo de credenciais
-        run: cat $GITHUB_WORKSPACE/terraform/credential.json  # Cuidado: Isso pode expor suas credenciais
-
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
 
