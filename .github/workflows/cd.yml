@@ -18,19 +18,22 @@ jobs:
         run: echo "${{ secrets.GOOGLE_CREDENTIALS }}" > $GITHUB_WORKSPACE/terraform/credential.json
 
       - name: Listar arquivos do diretório Terraform
-        run: ls -la ./terraform
+        run: ls -la $GITHUB_WORKSPACE/terraform
+
+      - name: Verificar conteúdo do arquivo de credenciais
+        run: cat $GITHUB_WORKSPACE/terraform/credential.json  # Cuidado: Isso pode expor suas credenciais
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
 
       - name: Terraform Init com Reconfigure
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/terraform/credential.json
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/terraform/credential.json
         run: terraform -chdir=./terraform init -reconfigure
        
       - name: Terraform Apply
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/terraform/credential.json
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ github.workspace }}/terraform/credential.json
         run: terraform -chdir=./terraform apply -auto-approve
         
       - name: Set up SSH for Ansible
@@ -43,5 +46,3 @@ jobs:
 
       - name: Remover arquivo de credenciais
         run: rm $GITHUB_WORKSPACE/terraform/credential.json
-
-
