@@ -14,6 +14,12 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v3
 
+      - name: Set up Google Cloud credentials
+        run: echo "${{ secrets.GCP_CREDENTIALS }}" > ${HOME}/gcloud-service-key.json
+
+      - name: Authenticate to Google Cloud
+        run: gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+
       - name: Listar arquivos do diretório Terraform
         run: ls -la ./terraform
 
@@ -22,15 +28,9 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Terraform Init com Reconfigure
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-          TF_LOG: DEBUG
         run: terraform -chdir=./terraform init -reconfigure
        
       - name: Terraform Apply
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-          TF_LOG: DEBUG
         run: terraform -chdir=./terraform apply -auto-approve
 
       - name: Set up SSH for Ansible
