@@ -45,3 +45,8 @@ jobs:
 
       - name: Run Ansible Playbook
         run: ansible-playbook -i inventory.yml playbook.yml
+
+      - name: Verificar o diretório e o conteúdo das credenciais
+        run: |
+          ls -la $HOME
+          head -n 5 $HOME/google-credentials.json  # Verifica as primeiras linhas do arquivo
