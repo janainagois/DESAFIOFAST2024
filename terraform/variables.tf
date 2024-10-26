@@ -47,7 +47,7 @@ variable "ssh_path_private_key" {
   default     = "~/.ssh/nome_da_chave"
 }
 
-variable "GOOGLE_CREDENTIALS" {
+variable "GCP_CREDENTIALS" {
   type = string
   default = "~/.ssh/credential.json"
 }
