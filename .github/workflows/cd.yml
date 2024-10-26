@@ -31,7 +31,10 @@ jobs:
       - name: Verificar o diretório e o conteúdo das credenciais
         run: |
           ls -la $GITHUB_WORKSPACE
-       
+          
+      - name: Verificar conteúdo do arquivo de credenciais
+        run: cat $GITHUB_WORKSPACE/google-credentials.json
+
       - name: Terraform Init com Reconfigure
         env:
           GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/google-credentials.json
