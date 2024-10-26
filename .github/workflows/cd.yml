@@ -26,18 +26,16 @@ jobs:
         run: |
           echo "${{ secrets.GCP_CREDENTIALS }}" > $GITHUB_WORKSPACE/google-credentials.json
           chmod 400 $GITHUB_WORKSPACE/google-credentials.json
-          export GOOGLE_APPLICATION_CREDENTIALS=$GITHUB_WORKSPACE/google-credentials.json
-          echo "GOOGLE_APPLICATION_CREDENTIALS is set to: $GOOGLE_APPLICATION_CREDENTIALS"
+          echo "GOOGLE_APPLICATION_CREDENTIALS is set to: $GITHUB_WORKSPACE/google-credentials.json"
 
       - name: Verificar o diretório e o conteúdo das credenciais
         run: |
           ls -la $GITHUB_WORKSPACE
-
+         
       - name: Verificar variável de ambiente
         run: |
-          echo "GOOGLE_APPLICATION_CREDENTIALS: $GOOGLE_APPLICATION_CREDENTIALS"
+          echo "GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/google-credentials.json"
         
-     
       - name: Terraform Init com Reconfigure
         env:
           GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/google-credentials.json
@@ -54,6 +52,8 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Run Ansible Playbook
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/google-credentials.json
         run: ansible-playbook -i inventory.yml playbook.yml
 
       
