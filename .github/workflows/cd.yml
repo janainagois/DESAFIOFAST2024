@@ -24,18 +24,23 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         run: |
-          echo "$GCP_CREDENTIALS" > $HOME/google-credentials.json
-          chmod 400 $HOME/google-credentials.json
-          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/google-credentials.json
+          echo "$GCP_CREDENTIALS" > $GITHUB_WORKSPACE/google-credentials.json
+          chmod 400 $GITHUB_WORKSPACE/google-credentials.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$GITHUB_WORKSPACE/google-credentials.json
+
+      - name: Verificar o diretório e o conteúdo das credenciais
+        run: |
+          ls -la $GITHUB_WORKSPACE
+          head -n 3 $GITHUB_WORKSPACE/google-credentials.json  # Verifica as primeiras linhas do arquivo
 
       - name: Terraform Init com Reconfigure
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: $HOME/google-credentials.json
+          GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/google-credentials.json
         run: terraform -chdir=./terraform init -reconfigure
        
       - name: Terraform Apply
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: $HOME/google-credentials.json
+          GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/google-credentials.json
         run: terraform -chdir=./terraform apply -auto-approve
 
       - name: Set up SSH for Ansible
@@ -46,7 +51,4 @@ jobs:
       - name: Run Ansible Playbook
         run: ansible-playbook -i inventory.yml playbook.yml
 
-      - name: Verificar o diretório e o conteúdo das credenciais
-        run: |
-          ls -la $HOME
-          head -n 5 $HOME/google-credentials.json  # Verifica as primeiras linhas do arquivo
+      
