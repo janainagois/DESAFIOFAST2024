@@ -24,19 +24,18 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         run: |
-          echo "$GCP_CREDENTIALS" > ~/google-credentials.json
-          export GOOGLE_APPLICATION_CREDENTIALS=~/google-credentials.json
+          echo "$GCP_CREDENTIALS" > $HOME/google-credentials.json
+          chmod 400 $HOME/google-credentials.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$HOME/google-credentials.json
 
       - name: Terraform Init com Reconfigure
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ~/google-credentials.json
-          TF_LOG: DEBUG
+          GOOGLE_APPLICATION_CREDENTIALS: $HOME/google-credentials.json
         run: terraform -chdir=./terraform init -reconfigure
        
       - name: Terraform Apply
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ~/google-credentials.json
-          TF_LOG: DEBUG
+          GOOGLE_APPLICATION_CREDENTIALS: $HOME/google-credentials.json
         run: terraform -chdir=./terraform apply -auto-approve
 
       - name: Set up SSH for Ansible
