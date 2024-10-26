@@ -26,6 +26,7 @@ jobs:
         run: |
           echo "${{ secrets.GCP_CREDENTIALS }}" > $GITHUB_WORKSPACE/google-credentials.json
           chmod 400 $GITHUB_WORKSPACE/google-credentials.json
+          export GOOGLE_APPLICATION_CREDENTIALS="$GITHUB_WORKSPACE/google-credentials.json"
           echo "GOOGLE_APPLICATION_CREDENTIALS is set to: $GITHUB_WORKSPACE/google-credentials.json"
 
       - name: Verificar o diretório e o conteúdo das credenciais
