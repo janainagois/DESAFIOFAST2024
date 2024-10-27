@@ -31,7 +31,7 @@ jobs:
 
       - name: Verificar o diretório e o conteúdo das credenciais
         run: |
-          ls -la tmp
+          ls -la /tmp
          
       - name: Verificar variável de ambiente
         run: |
