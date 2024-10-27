@@ -24,27 +24,27 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         run: |
-          echo "${{ secrets.GCP_CREDENTIALS }}" > $GITHUB_WORKSPACE/google-credentials.json
-          chmod 400 $GITHUB_WORKSPACE/google-credentials.json
-          export GOOGLE_APPLICATION_CREDENTIALS="$GITHUB_WORKSPACE/google-credentials.json"
-          echo "GOOGLE_APPLICATION_CREDENTIALS is set to: $GITHUB_WORKSPACE/google-credentials.json"
+          echo "${{ secrets.GCP_CREDENTIALS }}" > /tmp/google-credentials.json
+          chmod 400 tmp/google-credentials.json
+          export GOOGLE_APPLICATION_CREDENTIALS="/tmp/google-credentials.json"
+          echo "GOOGLE_APPLICATION_CREDENTIALS is set to: tmp/google-credentials.json"
 
       - name: Verificar o diretório e o conteúdo das credenciais
         run: |
-          ls -la $GITHUB_WORKSPACE
+          ls -la tmp
          
       - name: Verificar variável de ambiente
         run: |
-          echo "GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/google-credentials.json"
+          echo "GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json"
         
       - name: Terraform Init com Reconfigure
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/google-credentials.json
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json
         run: terraform -chdir=./terraform init -reconfigure
        
       - name: Terraform Apply
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/google-credentials.json
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json
         run: terraform -chdir=./terraform apply -auto-approve
 
       - name: Set up SSH for Ansible
@@ -54,7 +54,7 @@ jobs:
 
       - name: Run Ansible Playbook
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: $GITHUB_WORKSPACE/google-credentials.json
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json
         run: ansible-playbook -i inventory.yml playbook.yml
 
       

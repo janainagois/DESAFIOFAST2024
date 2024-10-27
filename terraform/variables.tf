@@ -49,7 +49,7 @@ variable "ssh_path_private_key" {
 
 variable "GCP_CREDENTIALS" {
   type = string
-  default = "~/.ssh/credential.json"
+  default = "credential.json"
 }
 
 variable "bucket_tfsatefile_name" {
