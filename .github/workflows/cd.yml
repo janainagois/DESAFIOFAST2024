@@ -25,7 +25,7 @@ jobs:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         run: |
           echo "${{ secrets.GCP_CREDENTIALS }}" > /tmp/google-credentials.json
-          chmod 400 tmp/google-credentials.json
+          chmod 400 /tmp/google-credentials.json
           export GOOGLE_APPLICATION_CREDENTIALS="/tmp/google-credentials.json"
           echo "GOOGLE_APPLICATION_CREDENTIALS is set to: /tmp/google-credentials.json"
 
