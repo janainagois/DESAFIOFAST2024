@@ -28,7 +28,9 @@ jobs:
       
        
       - name: Terraform Apply
-        run:  terraform  apply  -auto-approve  -input=false 
+        run:  |
+          cd ./terraform
+          terraform  apply  -auto-approve  -input=false 
         env:
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS}}
 
