@@ -15,7 +15,7 @@ terraform {
     #}
 
     backend "gcs" {
-    bucket  = "bucket-statefile-fast2024"
+    bucket  = var.bucket_tfsatefile_name
     prefix  = "terraform/state"
     }
     

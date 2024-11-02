@@ -17,8 +17,10 @@ jobs:
       - name: Listar arquivos do diretório Terraform
         run: ls -la ./terraform
 
-      - name: Set up Terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
+        with:
+          cli_config_credentials_token
 
       - name: Configurar credenciais Google
         env:
@@ -37,15 +39,17 @@ jobs:
         run: |
           echo "GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json"
         
-      - name: Terraform Init com Reconfigure
+      - name: Terraform Init
+        run: terraform init
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json
-        run: terraform -chdir=./terraform init -reconfigure
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS}}
+      
        
       - name: Terraform Apply
+        if:  github.ref  ==  'refs/heads/main'  &&  github.event_name  ==  'push' 
+        run:  terraform  apply  -auto-approve  -input=false 
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json
-        run: terraform -chdir=./terraform apply -auto-approve
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS}}
 
       - name: Set up SSH for Ansible
         uses: webfactory/ssh-agent@v0.5.4
@@ -53,8 +57,9 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Run Ansible Playbook
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json
         run: ansible-playbook -i inventory.yml playbook.yml
+        env:
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS}}
 
+        
       

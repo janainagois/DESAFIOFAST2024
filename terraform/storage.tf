@@ -1,16 +1,12 @@
-resource "google_storage_bucket" "bucket-statefile" {
-  name                        = var.bucket_tfsatefile_name
+resource "google_storage_bucket" "raw" {
+  project                     = var.my_first_project
+  name                        = "${var.bucket_tfsatefile_name}-raw"
+  force_destroy               = false
   location                    = var.google_region
-  storage_class               = var.storage_class
-  public_access_prevention    = "enforced"
   uniform_bucket_level_access = true
-  
-  versioning {
-    enabled = true
-  }
-
+  storage_class               = var.storage_class
   labels = {
-    "environment" = "fast2024"
+    environment = "production"
+    team        = "devops"
   }
-
 }
