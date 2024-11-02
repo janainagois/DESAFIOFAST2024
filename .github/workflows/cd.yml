@@ -22,7 +22,9 @@ jobs:
         uses: hashicorp/setup-terraform@v2
                  
       - name: Terraform Init
-        run: terraform init -reconfigure
+        run: |
+          cd ./terraform
+          terraform init -reconfigure
         env:
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS}}
       
