@@ -13,6 +13,7 @@ jobs:
     steps:
       - name: Checkout código
         uses: actions/checkout@v3
+  
 
       - name: Listar arquivos do diretório Terraform
         run: ls -la ./terraform
@@ -27,18 +28,17 @@ jobs:
       
        
       - name: Terraform Apply
-        if:  github.ref  ==  'refs/heads/main'  &&  github.event_name  ==  'push' 
         run:  terraform  apply  -auto-approve  -input=false 
         env:
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS}}
 
-      - name: Set up SSH for Ansible
+      - name: Setup SSH for Ansible
         uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Run Ansible Playbook
-        run: ansible-playbook -i inventory.yml playbook.yml
+        run: ansible-playbook -i playbooks/inventory playbooks/install_docker.yml
         env:
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS}}
 
