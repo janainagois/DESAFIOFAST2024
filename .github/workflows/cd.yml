@@ -21,7 +21,7 @@ jobs:
           terraform_version: 1.9.7
 
       - name: Decode credentials
-        run: echo "${{ secrets.GOOGLE_CREDENTIALS_B64 }}" | base64 -d > "/home/runner/credentials-google.json"
+        run: echo "${{ secrets.GCP_CREDENTIALS }}" | base64 -d > "/home/runner/credentials-google.json"
         
         shell: bash
 
