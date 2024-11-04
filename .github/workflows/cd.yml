@@ -15,9 +15,6 @@ jobs:
         uses: actions/checkout@v3
   
 
-      - name: Listar arquivos do diretório Terraform
-        run: ls -la ./terraform
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -26,6 +23,7 @@ jobs:
 
                  
       - name: Terraform Init
+        working-directory: ./terraform
         run: 
           terraform init -get=true -upgrade -reconfigure
         env:
@@ -33,6 +31,7 @@ jobs:
       
        
       - name: Terraform Apply
+        working-directory: ./terraform
         run:  |
           cd ./terraform
           terraform  apply  -auto-approve  -input=false 
@@ -45,6 +44,7 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Run Ansible Playbook
+        working-directory: ./ansible
         run: ansible-playbook -i playbooks/inventory playbooks/install_docker.yml
         env:
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS}}
