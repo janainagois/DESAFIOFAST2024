@@ -20,6 +20,14 @@ jobs:
         with:
           terraform_version: 1.9.7
 
+          
+      - name: Set up Google Cloud credentials
+        run: echo "${{ secrets.GCP_CREDENTIALS }}" > $HOME/credentials-google.json
+        env:
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+      
+      - name: Configure Google Application Credentials
+        run: export GOOGLE_APPLICATION_CREDENTIALS="$HOME/credentials-google.json"
 
 
                  
