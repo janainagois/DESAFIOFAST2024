@@ -20,32 +20,33 @@ jobs:
         with:
           terraform_version: 1.9.7
 
-          
       - name: Set up Google Cloud credentials
-        run: echo "${{ secrets.GCP_CREDENTIALS }}" > $HOME/credentials-google.json
+        run: |
+          echo "${{ secrets.GCP_CREDENTIALS }}" > "$HOME/credentials-google.json"
+        shell: bash
+
+      - name: Set GOOGLE_APPLICATION_CREDENTIALS
+        run: |
+          export GOOGLE_APPLICATION_CREDENTIALS="$HOME/credentials-google.json"
+        shell: bash
         env:
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-      
-      - name: Configure Google Application Credentials
-        run: export GOOGLE_APPLICATION_CREDENTIALS="$HOME/credentials-google.json"
 
+      - name: Change Directory to Terraform
+        working-directory: ./terraform
+        run: pwd  # Para confirmar que estamos no diretório correto
 
-                 
       - name: Terraform Init
         working-directory: ./terraform
-        run: 
-          terraform init -get=true -upgrade -reconfigure
         env:
-          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-      
-       
-      - name: Terraform Apply
+          GOOGLE_APPLICATION_CREDENTIALS: "$HOME/credentials-google.json"
+        run: terraform init -get=true -upgrade -reconfigure
+
+      - name:  Terraform Apply
         working-directory: ./terraform
-        run:  |
-          cd ./terraform
-          terraform  apply  -auto-approve  -input=false 
         env:
-          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+          GOOGLE_APPLICATION_CREDENTIALS: "$HOME/credentials-google.json"
+        run: terraform apply -auto-approve -input=false
 
       - name: Setup SSH for Ansible
         uses: webfactory/ssh-agent@v0.5.4
@@ -54,9 +55,9 @@ jobs:
 
       - name: Run Ansible Playbook
         working-directory: ./ansible
-        run: ansible-playbook -i playbooks/inventory playbooks/install_docker.yml
         env:
-          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-
+          GOOGLE_APPLICATION_CREDENTIALS: "$HOME/credentials-google.json"
+        run: ansible-playbook -i playbooks/inventory playbooks/install_docker.yml
+       
         
       
