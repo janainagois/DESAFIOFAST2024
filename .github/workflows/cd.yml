@@ -22,12 +22,12 @@ jobs:
 
       - name: Set up Google Cloud credentials
         run: |
-          echo "${{ secrets.GCP_CREDENTIALS }}" > "$HOME/credentials-google.json"
+          echo "${{ secrets.GCP_CREDENTIALS }}" > "/home/runner/credentials-google.json"
         shell: bash
 
       - name: Set GOOGLE_APPLICATION_CREDENTIALS
         run: |
-          export GOOGLE_APPLICATION_CREDENTIALS="$HOME/credentials-google.json"
+          export GOOGLE_APPLICATION_CREDENTIALS="/home/runner/credentials-google.json"
         shell: bash
         env:
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
@@ -39,13 +39,13 @@ jobs:
       - name: Terraform Init
         working-directory: ./terraform
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: "$HOME/credentials-google.json"
+          GOOGLE_APPLICATION_CREDENTIALS: "/home/runner/credentials-google.json"
         run: terraform init -get=true -upgrade -reconfigure
 
       - name:  Terraform Apply
         working-directory: ./terraform
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: "$HOME/credentials-google.json"
+          GOOGLE_APPLICATION_CREDENTIALS: "/home/runner/credentials-google.json"
         run: terraform apply -auto-approve -input=false
 
       - name: Setup SSH for Ansible
@@ -56,7 +56,7 @@ jobs:
       - name: Run Ansible Playbook
         working-directory: ./ansible
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: "$HOME/credentials-google.json"
+          GOOGLE_APPLICATION_CREDENTIALS: "/home/runner/credentials-google.json"
         run: ansible-playbook -i playbooks/inventory playbooks/install_docker.yml
        
         
