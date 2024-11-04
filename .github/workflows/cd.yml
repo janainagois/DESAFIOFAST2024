@@ -27,7 +27,7 @@ jobs:
                  
       - name: Terraform Init
         run: 
-          terraform init 
+          terraform init -get=true -upgrade -reconfigure
         env:
           GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS}}
       
