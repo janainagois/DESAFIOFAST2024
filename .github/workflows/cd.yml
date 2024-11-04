@@ -20,6 +20,11 @@ jobs:
         with:
           terraform_version: 1.9.7
 
+      - name: Encode GCP Credentials to Base64 and create JSON file
+        run: |
+          echo "${{ secrets.GCP_CREDENTIALS }}" | base64 -w 0 > encoded_credentials.txt
+        shell: bash
+
       - name: Set up Google Cloud credentials
         run: |
           echo "${{ secrets.GCP_CREDENTIALS }}" > "/home/runner/credentials-google.json"
