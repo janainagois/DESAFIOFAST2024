@@ -40,7 +40,9 @@ jobs:
         working-directory: ./terraform
         env:
           GOOGLE_APPLICATION_CREDENTIALS: "${{ secrets.GCP_CREDENTIALS }}"
-        run: terraform init -get=true -upgrade -reconfigure
+        run: |
+          echo $GOOGLE_APPLICATION_CREDENTIALS
+          terraform init -get=true -upgrade -reconfigure
 
       - name:  Terraform Apply
         working-directory: ./terraform
