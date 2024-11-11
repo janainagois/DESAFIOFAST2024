@@ -67,4 +67,4 @@ jobs:
         run: ansible-playbook -i playbooks/inventory playbooks/install_docker.yml
        
         
-      
+    
