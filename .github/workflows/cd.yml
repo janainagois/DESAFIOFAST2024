@@ -1,56 +1,53 @@
 name: fast-cd
-
 on:
-  workflow_dispatch:  # Permite executar o deploy manualmente pelo GitHub Actions
+  workflow_dispatch: 
   push:
     tags:
-      - 'v*.*.*'  # Executa o workflow quando uma tag de versão for criada (ex: v1.0.0)
-
+      - 'v*.*.*'  
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout código
         uses: actions/checkout@v3
-  
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.9.7
-       
-      - name: Set up Google Cloud credentials
-        run: echo "${{ secrets.GCP_CREDENTIALS }}" > $HOME/credentials-google.json
-        
-      - name: Set GOOGLE_APPLICATION_CREDENTIALS environment variable
-        run: echo "GOOGLE_APPLICATION_CREDENTIALS=$HOME/credentials-google.json" >> $GITHUB_ENV
-        
-    
-      - name: Terraform Init
-        working-directory: ./terraform
+          cli_config_credentials_token
+
+      - name: Configurar credenciais Google
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: "${{ secrets.GCP_CREDENTIALS }}"
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         run: |
-          echo $GOOGLE_APPLICATION_CREDENTIALS
-          terraform init -get=true -upgrade -reconfigure
-
-      - name:  Terraform Apply
-        working-directory: ./terraform
+          echo "${{ secrets.GCP_CREDENTIALS }}" > /tmp/google-credentials.json
+          chmod 400 /tmp/google-credentials.json
+          export GOOGLE_APPLICATION_CREDENTIALS="/tmp/google-credentials.json"
+          echo "GOOGLE_APPLICATION_CREDENTIALS is set to: /tmp/google-credentials.json"
+      - name: Verificar o diretório e o conteúdo das credenciais
+        run: |
+          ls -la /tmp
+         
+      - name: Verificar variável de ambiente
+        run: |
+          echo "GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json"
+        
+      - name: Terraform Init com Reconfigure
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: "/home/runner/credentials-google.json"
-        run: terraform apply -auto-approve -input=false
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json
+        run: terraform -chdir=./terraform init -reconfigure
+       
+      - name: Terraform Apply
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json
+        run: terraform -chdir=./terraform apply -auto-approve
 
-      - name: Setup SSH for Ansible
+      - name: Set up SSH for Ansible
         uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Run Ansible Playbook
-        working-directory: ./ansible
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: "/home/runner/credentials-google.json"
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json
         run: ansible-playbook -i playbooks/inventory playbooks/install_docker.yml
-       
-        
-    
