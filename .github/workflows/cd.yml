@@ -19,11 +19,10 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         run: |
-          printf "%s" "${{ secrets.GCP_CREDENTIALS }}" > /tmp/google-credentials.json
+          echo "${{ secrets.GCP_CREDENTIALS }}" > /tmp/google-credentials.json
           chmod 400 /tmp/google-credentials.json
           export GOOGLE_APPLICATION_CREDENTIALS="/tmp/google-credentials.json"
-          echo "GOOGLE_APPLICATION_CREDENTIALS is set to: /tmp/google-credentials.json"
-               
+          
               
       - name: Terraform Init com Reconfigure
         env:
