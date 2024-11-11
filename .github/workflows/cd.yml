@@ -1,4 +1,4 @@
-name: desafio-fast-2024
+name: fast-cd
 
 on:
   push:

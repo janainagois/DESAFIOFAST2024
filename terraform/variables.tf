@@ -44,8 +44,3 @@ variable "ssh_path_private_key" {
   description = "Path SSH Private Key"
   type        = string
 }
-
-variable "GCP_CREDENTIALS" {
-  type = string
-  default = "/credentials-google.json"
-}
