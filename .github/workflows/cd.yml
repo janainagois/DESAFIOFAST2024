@@ -19,7 +19,7 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         run: |
-          echo "${{ secrets.GCP_CREDENTIALS }}" > /tmp/google-credentials.json
+          echo "${{ secrets.GCP_CREDENTIALS }}" | base64 --decode > /tmp/google-credentials.json
           chmod 400 /tmp/google-credentials.json
           export GOOGLE_APPLICATION_CREDENTIALS="/tmp/google-credentials.json"
           
