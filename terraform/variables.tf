@@ -51,15 +51,3 @@ variable "GCP_CREDENTIALS" {
   type = string
   default = "/credentials-google.json"
 }
-
-variable "bucket_tfsatefile_name" {
-  description = "Name of the Bucket to save Statefile"
-  type        = string
-  default     = "bucket-statefile-fast2024"
-}
-
-variable "storage_class" {
-  description = "Name of the Bucket to save Statefile"
-  type        = string
-  default     = "standard"
-}

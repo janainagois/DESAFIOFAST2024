@@ -17,9 +17,3 @@ google_instance_image = "ubuntu-os-cloud/ubuntu-2204-jammy-v20240904"
 
 # Google Network Name
 google_network = "default"
-
-# Name of the Bucket to save Statefile
-bucket_tfsatefile_name = "bucket-statefile-fast2024"
-
-# Storage Class for the Bucket
-storage_class = "standard"
