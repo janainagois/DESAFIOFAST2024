@@ -13,8 +13,7 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
-      #  with:
-      #    cli_config_credentials_token
+      
 
       - name: Configurar credenciais Google
         env:
@@ -24,14 +23,8 @@ jobs:
           chmod 400 /tmp/google-credentials.json
           export GOOGLE_APPLICATION_CREDENTIALS="/tmp/google-credentials.json"
           echo "GOOGLE_APPLICATION_CREDENTIALS is set to: /tmp/google-credentials.json"
-      - name: Verificar o diretório e o conteúdo das credenciais
-        run: |
-          ls -la /tmp
-         
-      - name: Verificar variável de ambiente
-        run: |
-          echo "GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json"
-        
+               
+              
       - name: Terraform Init com Reconfigure
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json

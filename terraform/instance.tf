@@ -56,14 +56,14 @@ output "instance_ip" {
 }
 resource "google_compute_firewall" "allow_http" {
   name    = "allow-http"
-  network = "default" # Ou o nome da rede que você está usando
+  network = "default" 
 
   allow {
     protocol = "tcp"
     ports    = ["22", "80"]
   }
 
-  target_tags = ["swarm-node"] # Certifique-se de que as instâncias tenham essa tag
+  target_tags = ["swarm-node"] 
   direction   = "INGRESS"
-  source_ranges = ["0.0.0.0/0"] # Permite acesso de qualquer IP
+  source_ranges = ["0.0.0.0/0"] 
 }
