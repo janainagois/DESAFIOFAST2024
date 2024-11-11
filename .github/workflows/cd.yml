@@ -38,8 +38,8 @@ jobs:
 
       - name: Terraform Init
         working-directory: ./terraform
-        #env:
-        #  GOOGLE_APPLICATION_CREDENTIALS: "/home/runner/credentials-google.json"
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: "${{ secrets.GCP_CREDENTIALS }}"
         run: terraform init -get=true -upgrade -reconfigure
 
       - name:  Terraform Apply
