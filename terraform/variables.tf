@@ -38,13 +38,11 @@ variable "google_network" {
 variable "ssh_key_path_default_user" {
   description = "Path SSH Key for Default User"
   type        = string
-  default     = "~/.ssh/nome_da_chave.pub"
 }
 
 variable "ssh_path_private_key" {
   description = "Path SSH Private Key"
   type        = string
-  default     = "~/.ssh/nome_da_chave"
 }
 
 variable "GCP_CREDENTIALS" {
