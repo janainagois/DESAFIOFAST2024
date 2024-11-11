@@ -13,8 +13,8 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
-        with:
-          cli_config_credentials_token
+      #  with:
+      #    cli_config_credentials_token
 
       - name: Configurar credenciais Google
         env:
