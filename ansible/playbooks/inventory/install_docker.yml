@@ -5,21 +5,18 @@
 
   vars:
     ssh_key_path_default_user: ~/.ssh/nome_da_chave.pub
-    ssh_path_private_key: ~/.ssh/nome_da_chave
-    
+    ssh_path_private_key: ~/.ssh/nome_da_chave 
 
   tasks:
     - name: "Add the user 'ansible' and add it to 'sudo'"
       user:
         name: 'ansible'
         group: 'sudo' 
-
     - name: "Add SSH key to 'ansible'"
       authorized_key:
         user: 'ansible'
         state: 'present'
         key: "{{ lookup('file', ssh_key_path_default_user) }}" 
-
     - name: "Wait for apt to unlock"
       become: true
       shell: "while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do sleep 5; done;"  
