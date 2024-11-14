@@ -10,6 +10,7 @@
       ansible.builtin.user:
         name: 'ansible'
         group: 'sudo'
+        
     - name: "Add the SSH private key for ansible"
       ansible.builtin.copy:
         content: "{{ lookup('env', 'SSH_PRIVATE_KEY') }}"
@@ -22,11 +23,6 @@
         dest: "{{ ssh_key_path_default_user }}"
         mode: '0644'
 
-    - name: "Add the user 'ansible' and add it to 'sudo'"
-      ansible.builtin.user:
-        name: 'ansible'
-        group: 'sudo'
-        
     - name: "Add SSH key to 'ansible'"
       ansible.builtin.authorized_key:
         user: 'ansible'
