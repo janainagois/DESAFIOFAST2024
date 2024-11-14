@@ -1,26 +1,42 @@
 ---
-- name: Install Docker and initialize Docker Swarm
+- name: "Install Docker and initialize Docker Swarm"
   hosts: all
   become: true
   vars:
-    ssh_key_path_default_user: ~/.ssh/nome_da_chave.pub
-    ssh_path_private_key: ~/.ssh/nome_da_chave
-
+    ssh_key_path_default_user: /tmp/id_rsa.pub  
+    ssh_path_private_key: /tmp/id_rsa           
   tasks:
     - name: "Add the user 'ansible' and add it to 'sudo'"
-      user:
+      ansible.builtin.user:
+        name: 'ansible'
+        group: 'sudo'
+    - name: "Add the SSH private key for ansible"
+      ansible.builtin.copy:
+        content: "{{ lookup('env', 'SSH_PRIVATE_KEY') }}"
+        dest: "{{ ssh_path_private_key }}"
+        mode: '0600'
+
+    - name: "Add the SSH public key for ansible"
+      ansible.builtin.copy:
+        content: "{{ lookup('env', 'SSH_PUBLIC_KEY') }}"
+        dest: "{{ ssh_key_path_default_user }}"
+        mode: '0644'
+
+    - name: "Add the user 'ansible' and add it to 'sudo'"
+      ansible.builtin.user:
         name: 'ansible'
         group: 'sudo'
         
     - name: "Add SSH key to 'ansible'"
-      authorized_key:
+      ansible.builtin.authorized_key:
         user: 'ansible'
         state: 'present'
         key: "{{ lookup('file', ssh_key_path_default_user) }}"
 
-    - name: "Ensure correct permissions for the private key"
-      ansible.builtin.file:
-        path: "{{ ssh_path_private_key }}"
+    - name: "Add the SSH private key for ansible"
+      ansible.builtin.copy:
+        content: "{{ lookup('env', 'SSH_PRIVATE_KEY') }}"
+        dest: "{{ ssh_path_private_key }}"
         mode: '0600'
 
     - name: "Wait for apt to unlock"
