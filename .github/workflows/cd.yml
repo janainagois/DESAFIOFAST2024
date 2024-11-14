@@ -78,7 +78,7 @@ jobs:
           eval `ssh-agent -s`
           mkdir -p /home/runner/.ssh/
           touch /home/runner/.ssh/ecdsa_ansible.pub
-          echo -e "${{ secrets.ANSIBLE_SSH_PUB }}" > /home/runner/.ssh/ecdsa_ansible.pub
+          echo -e "${{ secrets.SSH_PUBLIC_KEY }}" > /home/runner/.ssh/ecdsa_ansible.pub
           chmod 644 /home/runner/.ssh/ecdsa_ansible.pub
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -130,7 +130,7 @@ jobs:
           eval `ssh-agent -s`
           mkdir -p /home/runner/.ssh/
           touch /home/runner/.ssh/ecdsa_ansible
-          echo -e "${{ secrets.ANSIBLE_SSH }}" > /home/runner/.ssh/ecdsa_ansible
+          echo -e "${{ secrets.SSH_PRIVATE_KEY }}" > /home/runner/.ssh/ecdsa_ansible
           chmod 700 /home/runner/.ssh/ecdsa_ansible
       - name: Create Ansible Inventory
         run: |
