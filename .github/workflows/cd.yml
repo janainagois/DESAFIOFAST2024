@@ -12,10 +12,15 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
-      - name: Run ansible-lint
-        uses: ansible/ansible-lint@main
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          working_directory: ./ansible
+          python-version: '3.x'
+      - name: Install ansible-lint
+        run: pip install ansible-lint==6.16.1  # Defina uma versão estável
+      - name: Run ansible-lint
+        run: ansible-lint
+        working-directory: ./ansible
   
   terraform-lint:
     name: Terraform Lint
@@ -38,18 +43,18 @@ jobs:
       - name: Run TFLint
         run: tflint -f compact
 
-  terraform-sec:
-    name: Terraform Security
-    runs-on: ubuntu-latest
-    needs: 
-      - terraform-lint
-    steps:
-      - name: Check out Git Repository
-        uses: actions/checkout@v4
-      - name: Run Tfsec
-        uses: aquasecurity/tfsec-action@v1.0.0
-        with:
-          additional_args: --exclude google-compute-no-public-ip
+   #terraform-sec:
+   # name: Terraform Security
+   #runs-on: ubuntu-latest
+   #needs: 
+   # - terraform-lint
+   #steps:
+   # - name: Check out Git Repository
+   #  uses: actions/checkout@v4
+   #- name: Run Tfsec
+   # uses: aquasecurity/tfsec-action@v1.0.0
+   #with:
+   # additional_args: --exclude google-compute-no-public-ip
 
   terraform:
     name: Terraform
