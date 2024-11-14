@@ -2,7 +2,6 @@
 - name: Install Docker and initialize Docker Swarm
   hosts: all
   become: true
-
   vars:
     ssh_key_path_default_user: ~/.ssh/nome_da_chave.pub
     ssh_path_private_key: ~/.ssh/nome_da_chave 
