@@ -1,36 +1,27 @@
 ---
-- name: "Instalar pacotes necessários"
-  ansible.builtin.apt:
+- name: Instalar pacotes necessários
+  apt:
     name: 
       - apt-transport-https
       - ca-certificates
       - curl
       - software-properties-common
-    state: 'present'
-    update_cache: true
+    state: present
+    update_cache: yes
 
-- name: "Baixar chave GPG do Docker"
-  ansible.builtin.get_url:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    dest: /tmp/docker.gpg
+- name: Adicionar a chave GPG do Docker
+  shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 
-- name: "Adicionar chave GPG ao apt"
-  ansible.builtin.apt_key:
-    file: /tmp/docker.gpg
-    state: 'present'
+- name: Adicionar repositório Docker
+  shell: add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
-- name: "Adicionar repositório Docker"
-  ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_facts.lsb['codename'] }} stable"
-    state: 'present'
-
-- name: "Instalar Docker"
-  ansible.builtin.apt:
+- name: Instalar Docker
+  apt:
     name: docker-ce
-    state: 'present'
+    state: present
 
-- name: "Iniciar e habilitar Docker"
-  ansible.builtin.service:
+- name: Iniciar e habilitar Docker
+  service:
     name: docker
-    state: 'started'
-    enabled: true
+    state: started
+    enabled: yes
