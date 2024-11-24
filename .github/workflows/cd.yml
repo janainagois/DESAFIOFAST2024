@@ -30,6 +30,7 @@ jobs:
       - name: Terraform Apply
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json
+          TF_LOG: DEBUG
         run: terraform -chdir=./terraform apply -auto-approve -lock=false -var="ssh_key_path_default_user=${{ secrets.SSH_PUBLIC_KEY }}"
       - name: Set up SSH for Ansible
         uses: webfactory/ssh-agent@v0.5.4
