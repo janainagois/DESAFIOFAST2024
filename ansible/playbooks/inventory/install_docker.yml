@@ -4,8 +4,8 @@
   become: true
 
   vars:
-    ssh_key_path_default_user: file("/home/janainagois/.ssh/nome_da_chave.pub")
-    ssh_path_private_key: file("/home/janainagois/.ssh/nome_da_chave")
+    ssh_key_path_default_user: file("./ssh_public_key.pub")
+    ssh_path_private_key: file("./ssh_private_key.pem")
     
 
   tasks:

@@ -18,6 +18,6 @@ google_instance_image = "ubuntu-os-cloud/ubuntu-2204-jammy-v20240904"
 # Google Network Name
 google_network = "default"
 
-ssh_key_path_default_user = "/home/janainagois/.ssh/nome_da_chave.pub"
+ssh_key_path_default_user = "./ssh_public_key.pub"
 
-ssh_path_private_key      = "/home/janainagois/.ssh/nome_da_chave"
+ssh_path_private_key      = "./ssh_private_key.pem"

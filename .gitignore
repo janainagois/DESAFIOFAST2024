@@ -1,4 +1,6 @@
 credentials-google.json
+ssh_public_key.pub
+ssh_private_key.pem
 ./terraform/.terraform/tfstate.backup
 .terraform/.terraform.lock.hcl
 .terraform/terraform.tfstate
