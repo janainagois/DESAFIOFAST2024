@@ -23,6 +23,11 @@ jobs:
           echo -n "${{ secrets.SSH_PRIVATE_KEY }}" > $SSH_PRIVATE_KEY_PATH
           chmod 600 $SSH_PUBLIC_KEY_PATH $SSH_PRIVATE_KEY_PATH
 
+      - name: Verificar chave pública
+        run: |
+          ls -l /tmp/ssh_public_key.pub
+          cat /tmp/ssh_public_key.pub
+
       - name: Configurar credenciais Google
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
