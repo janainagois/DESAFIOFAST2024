@@ -1,4 +1,5 @@
 credentials-google.json
 ./terraform/.terraform/tfstate.backup
-./terraform/.terraform/.terraform.lock.hcl
-./terraform/.terraform/terraform.tfstate
+.terraform/.terraform.lock.hcl
+.terraform/terraform.tfstate
+./terraform/terraform.tfvars

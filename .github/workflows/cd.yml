@@ -10,32 +10,43 @@ jobs:
     steps:
       - name: Checkout código
         uses: actions/checkout@v3
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
-      
+
+      - name: Configurar variáveis de ambiente para SSH
+        env:
+          SSH_PUBLIC_KEY_PATH: /tmp/ssh_public_key.pub
+          SSH_PRIVATE_KEY_PATH: /tmp/ssh_private_key
+        run: |
+          echo -n "${{ secrets.SSH_PUBLIC_KEY }}" > $SSH_PUBLIC_KEY_PATH
+          echo -n "${{ secrets.SSH_PRIVATE_KEY }}" > $SSH_PRIVATE_KEY_PATH
+          chmod 600 $SSH_PUBLIC_KEY_PATH $SSH_PRIVATE_KEY_PATH
+
       - name: Configurar credenciais Google
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
         run: |
-           echo "${{ secrets.GCP_CREDENTIALS }}" | base64 --decode > /tmp/google-credentials.json
-           chmod 400 /tmp/google-credentials.json
-           export GOOGLE_APPLICATION_CREDENTIALS="/tmp/google-credentials.json"
-          
-              
+          echo "${{ secrets.GCP_CREDENTIALS }}" | base64 --decode > /tmp/google-credentials.json
+          chmod 400 /tmp/google-credentials.json
+          export GOOGLE_APPLICATION_CREDENTIALS="/tmp/google-credentials.json"
+
       - name: Terraform Init com Reconfigure
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json
         run: terraform -chdir=./terraform init -reconfigure
-       
+
       - name: Terraform Apply
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json
           TF_LOG: DEBUG
-        run: terraform -chdir=./terraform apply -auto-approve -lock=false -var="ssh_key_path_default_user=${{ secrets.SSH_PUBLIC_KEY }}"
+        run: terraform -chdir=./terraform apply -auto-approve -lock=false -var="ssh_key_path_default_user=${{ env.SSH_PUBLIC_KEY_PATH }}"
+
       - name: Set up SSH for Ansible
         uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Run Ansible Playbook
         env:
           GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-credentials.json
