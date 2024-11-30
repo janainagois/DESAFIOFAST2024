@@ -5,7 +5,7 @@ resource "google_compute_instance" "app_instance" {
   machine_type = var.google_instance_type
   zone     = var.google_zone
   metadata = {
-    ssh-keys = "ansible:${var.ssh_public_key}"
+    ssh-keys = "ansible:${var.ssh_key_path_default_user}"
   }
   boot_disk {
     initialize_params {
