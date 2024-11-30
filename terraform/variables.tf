@@ -38,9 +38,11 @@ variable "google_network" {
 variable "ssh_key_path_default_user" {
   description = "Path SSH Key for Default User"
   type        = string
+  default     = "./ssh_public_key.pub"
 }
 
 variable "ssh_path_private_key" {
   description = "Path SSH Private Key"
   type        = string
+  default     = "./ssh_private_key.pem"
 }
