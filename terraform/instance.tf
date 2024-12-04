@@ -5,7 +5,7 @@ resource "google_compute_instance" "app_instance" {
   machine_type = var.google_instance_type
   zone     = var.google_zone
   metadata = {
-    ssh-keys = "ansible:${var.ssh_key_path_default_user}"
+    ssh-keys = "ansible:$(cat var.ssh_key_path_default_user)"
   }
   boot_disk {
     initialize_params {
@@ -31,7 +31,7 @@ resource "google_compute_instance" "app_instance" {
       host        = self.network_interface[0].access_config[0].nat_ip
       type        = "ssh"
       user        = "ansible"
-      private_key = file(var.ssh_path_private_key)
+      private_key = private_key = can(file(var.ssh_path_private_key)) ? file(var.ssh_path_private_key) : var.ssh_private_key_secret
     }
   }
 

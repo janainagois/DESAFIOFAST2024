@@ -46,3 +46,9 @@ variable "ssh_path_private_key" {
   type        = string
   default     = "../ssh_private_key.pem"
 }
+
+variable "ssh_private_key_secret" {
+  description = "Chave privada SSH passada pelas secrets"
+  type        = string
+  default     = "" 
+}
