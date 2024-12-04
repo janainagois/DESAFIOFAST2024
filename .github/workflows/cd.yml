@@ -49,6 +49,7 @@ jobs:
         run: |
           terraform -chdir=./terraform apply \
           -auto-approve \
+          -lock=false
           -var="ssh_path_private_key=/tmpssh_private_key" \
           -var="ssh_key_path_default_user=/tmp/ssh_public_key.pub"
 
